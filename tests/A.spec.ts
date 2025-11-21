@@ -76,5 +76,6 @@ describe('A', () => {
         });
 
         expect(await a.getScore()).toBe(1337);
+        expect(await a.getID()).toBe(0x7e8764ef);
     });
 });

@@ -39,14 +39,17 @@ fun onInternalMessage(in: InMessage) {
 
 fun onBouncedMessage(in: InMessageBounced) {
     val richBounceBody = lazy RichBounceBody.fromSlice(in.bouncedBody);
-    val originalBody = lazy ProvokeBounce.fromCell(richBounceBody.originalBody);
+    val originalBodyOpCode = richBounceBody.originalBody.beginParse().loadUint(32);
     var storage = lazy Storage.load();
     // reset score based on RichBounce data
-    match (originalBody) {
-        ProvokeBounce => {
+    match (originalBodyOpCode) {
+        ProvokeBounce.getDeclaredPackPrefix() => {
             storage.score = 1000 + richBounceBody.exitCode;
+            // also change ID just for fun
+            storage.id = originalBodyOpCode;
         },
         else => {
+            // this branch is probably unreacheable 
             storage.score = richBounceBody.exitCode as uint256;
         },
     }
