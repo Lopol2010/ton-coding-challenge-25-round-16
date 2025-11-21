@@ -27,8 +27,8 @@ https://t.me/toneachat
 
 ### 你的答案：
 
-1. 你的 Tolk 代码文件名 A = ？
-2. 你的 Tolk 代码文件名 B = ？
+1. 你的 Tolk 代码文件名 A = contracts/A.tolk
+2. 你的 Tolk 代码文件名 B = contracts/B.tolk
 
 
 
