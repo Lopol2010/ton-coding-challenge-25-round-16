@@ -15,8 +15,8 @@ https://t.me/toneachat
 课件地址：https://ton-org.notion.site/Tolk-1-2-Update-2b05274bd2cf8018a535c5e917274e03
 
 领奖信息收集：
-1. 你的 Telegram 用户名 = ？
-2. 你的主网 TON 钱包地址 = ？
+1. 你的 Telegram 用户名 = @flowershy
+2. 你的主网 TON 钱包地址 = UQBlQSEITlCHZA3tYqoQHvJtS7cbFEdtewqreIiXCw5Y-_p1
 
 
 ## 任务：Rich Bounce 应用案例

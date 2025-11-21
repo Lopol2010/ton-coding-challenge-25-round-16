@@ -1,18 +1,23 @@
 import { Address, beginCell, Cell, Contract, contractAddress, ContractProvider, Sender, SendMode } from '@ton/core';
 
 export type AConfig = {
-    id: number;
-    counter: number;
+    id: number 
+    score: number 
+    B: Address 
+};
+
+export const OP_CODES = {
+    PROVOKE_BOUNCE: 0x7e8764ef
 };
 
 export function aConfigToCell(config: AConfig): Cell {
-    return beginCell().storeUint(config.id, 32).storeUint(config.counter, 32).endCell();
-}
 
-export const Opcodes = {
-    OP_INCREASE: 0x7e8764ef,
-    OP_RESET: 0x3a752f06,
-};
+    return beginCell()
+        .storeUint(config.id, 32)
+        .storeUint(config.score, 256)
+        .storeAddress(config.B)
+        .endCell();
+}
 
 export class A implements Contract {
     constructor(readonly address: Address, readonly init?: { code: Cell; data: Cell }) {}
@@ -35,46 +40,22 @@ export class A implements Contract {
         });
     }
 
-    async sendIncrease(
+    async sendProvokeBounce(
         provider: ContractProvider,
         via: Sender,
         opts: {
-            increaseBy: number;
             value: bigint;
-            queryID?: number;
         }
     ) {
         await provider.internal(via, {
             value: opts.value,
             sendMode: SendMode.PAY_GAS_SEPARATELY,
-            body: beginCell()
-                .storeUint(Opcodes.OP_INCREASE, 32)
-                .storeUint(opts.queryID ?? 0, 64)
-                .storeUint(opts.increaseBy, 32)
-                .endCell(),
+            body: beginCell().storeUint(OP_CODES.PROVOKE_BOUNCE, 32).endCell(),
         });
     }
 
-    async sendReset(
-        provider: ContractProvider,
-        via: Sender,
-        opts: {
-            value: bigint;
-            queryID?: number;
-        }
-    ) {
-        await provider.internal(via, {
-            value: opts.value,
-            sendMode: SendMode.PAY_GAS_SEPARATELY,
-            body: beginCell()
-                .storeUint(Opcodes.OP_RESET, 32)
-                .storeUint(opts.queryID ?? 0, 64)
-                .endCell(),
-        });
-    }
-
-    async getCounter(provider: ContractProvider) {
-        const result = await provider.get('currentCounter', []);
+    async getScore(provider: ContractProvider) {
+        const result = await provider.get('currentScore', []);
         return result.stack.readNumber();
     }
 
